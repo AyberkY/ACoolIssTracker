@@ -3,6 +3,9 @@ package edu.illinois.cs.cs125.spring2019.lab12;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,7 +41,11 @@ public final class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        startAPICall("192.17.96.8");
+        Button getJson = findViewById(R.id.getJson);
+        getJson.setOnClickListener(v -> {
+            Log.e(TAG, "GET JSON BUTTON CLICKED");
+            startAPICall();
+        });
     }
 
     /**
@@ -52,13 +59,12 @@ public final class MainActivity extends AppCompatActivity {
     /**
      * Make a call to the IP geolocation API.
      *
-     * @param ipAddress IP address to look up
      */
-    void startAPICall(final String ipAddress) {
+    void startAPICall() {
         try {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     Request.Method.GET,
-                    "https://ipinfo.io/" + ipAddress + "/json",
+                    "https://api.wheretheiss.at/v1/satellites/25544",
                     null,
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -87,7 +93,13 @@ public final class MainActivity extends AppCompatActivity {
         try {
             Log.d(TAG, response.toString(2));
             // Example of how to pull a field off the returned JSON object
-            Log.i(TAG, response.get("hostname").toString());
+            Log.i(TAG, response.get("name").toString());
+            TextView jsonInfo = findViewById(R.id.JsonInfo);
+            jsonInfo.setText(response.toString());
+            jsonInfo.setVisibility(View.VISIBLE);
+            Log.i(TAG, response.getString("latitude"));
+            Log.i(TAG, response.getString("longitude"));
+
         } catch (JSONException ignored) { }
     }
 }
