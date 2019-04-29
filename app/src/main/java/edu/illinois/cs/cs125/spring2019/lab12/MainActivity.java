@@ -1,5 +1,7 @@
 package edu.illinois.cs.cs125.spring2019.lab12;
 
+import java.util.Arrays;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,18 +16,30 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Main class for our UI design lab.
  */
-public final class MainActivity extends AppCompatActivity {
+public final class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     /** Default logging tag for messages from the main activity. */
     private static final String TAG = "Lab12:Main";
 
     /** Request queue for our API requests. */
     private static RequestQueue requestQueue;
+
+    /** Current location of the International Space Station! */
+    private Double[] coordinates = new Double[]{38.427452, 27.139481};
+//    coordinates[0] = 38.427452;
+//    coordinates[1] = 27.139481;
 
     /**
      * Run when this activity comes to the foreground.
@@ -41,11 +55,9 @@ public final class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        Button getJson = findViewById(R.id.getJson);
-        getJson.setOnClickListener(v -> {
-            Log.e(TAG, "GET JSON BUTTON CLICKED");
-            startAPICall();
-        });
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     /**
@@ -100,6 +112,41 @@ public final class MainActivity extends AppCompatActivity {
             Log.i(TAG, response.getString("latitude"));
             Log.i(TAG, response.getString("longitude"));
 
-        } catch (JSONException ignored) { }
+            coordinates[0] = Double.parseDouble(response.getString("latitude"));
+            coordinates[1] = Double.parseDouble(response.getString("longitude"));
+
+        } catch (JSONException ignored) {
+//            return null;
+        }
+    }
+
+    /**
+     * Manipulates the map when it's available.
+     * The API invokes this callback when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user receives a prompt to install
+     * Play services inside the SupportMapFragment. The API invokes this method after the user has
+     * installed Google Play services and returned to the app.
+     */
+    @Override
+    public void onMapReady(final GoogleMap googleMap) {
+        Button getJson = findViewById(R.id.getJson);
+        getJson.setOnClickListener(v -> {
+            Log.e(TAG, "GET JSON BUTTON CLICKED");
+            startAPICall();
+            // Add a marker where the ISS is.
+            // and move the map's camera to the same location.
+            LatLng location = new LatLng(coordinates[0], coordinates[1]);
+            googleMap.addMarker(new MarkerOptions().position(location)
+                    .title("Current Location of the ISS"));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+        });
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(final boolean hasCapture) {
+
     }
 }
