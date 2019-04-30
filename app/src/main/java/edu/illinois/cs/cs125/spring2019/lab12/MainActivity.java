@@ -1,7 +1,5 @@
 package edu.illinois.cs.cs125.spring2019.lab12;
 
-import java.util.Arrays;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,8 +36,6 @@ public final class MainActivity extends AppCompatActivity implements OnMapReadyC
 
     /** Current location of the International Space Station! */
     private Double[] coordinates = new Double[]{38.427452, 27.139481};
-//    coordinates[0] = 38.427452;
-//    coordinates[1] = 27.139481;
 
     /**
      * Run when this activity comes to the foreground.
@@ -115,9 +111,7 @@ public final class MainActivity extends AppCompatActivity implements OnMapReadyC
             coordinates[0] = Double.parseDouble(response.getString("latitude"));
             coordinates[1] = Double.parseDouble(response.getString("longitude"));
 
-        } catch (JSONException ignored) {
-//            return null;
-        }
+        } catch (JSONException ignored) { }
     }
 
     /**
