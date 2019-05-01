@@ -55,6 +55,9 @@ public final class MainActivity extends AppCompatActivity implements OnMapReadyC
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        TextView jsonInfo = findViewById(R.id.JsonInfo);
+        jsonInfo.setText("");
     }
 
     /**
@@ -132,19 +135,18 @@ public final class MainActivity extends AppCompatActivity implements OnMapReadyC
         getJson.setOnClickListener(v -> {
             Log.e(TAG, "GET JSON BUTTON CLICKED");
             startAPICall();
-
+            googleMap.clear();
             // Add a marker where the ISS is.
             // and move the map's camera to the same location.
             LatLng location = new LatLng(coordinates[0], coordinates[1]);
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(location);
             markerOptions.title("Current Location of the ISS");
-            markerOptions.snippet("Latitude: " + coordinates[0].toString() + '\n'
-                    + "Longitude: " + coordinates[1].toString());
+            // markerOptions.snippet("Latitude: " + coordinates[0].toString() + '\n'
+            //       + "Longitude: " + coordinates[1].toString());
             googleMap.addMarker(markerOptions);
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         });
-
     }
 
     @Override
