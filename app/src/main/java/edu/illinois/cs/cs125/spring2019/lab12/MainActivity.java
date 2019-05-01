@@ -102,11 +102,13 @@ public final class MainActivity extends AppCompatActivity implements OnMapReadyC
             Log.d(TAG, response.toString(2));
             // Example of how to pull a field off the returned JSON object
             Log.i(TAG, response.get("name").toString());
-            TextView jsonInfo = findViewById(R.id.JsonInfo);
-            jsonInfo.setText(response.toString());
-            jsonInfo.setVisibility(View.VISIBLE);
             Log.i(TAG, response.getString("latitude"));
             Log.i(TAG, response.getString("longitude"));
+
+            TextView jsonInfo = findViewById(R.id.JsonInfo);
+            jsonInfo.setText("Latitude: " + response.getString("latitude") + '\n'
+                    + "Longitude: " + response.getString("longitude"));
+            jsonInfo.setVisibility(View.VISIBLE);
 
             coordinates[0] = Double.parseDouble(response.getString("latitude"));
             coordinates[1] = Double.parseDouble(response.getString("longitude"));
@@ -129,11 +131,16 @@ public final class MainActivity extends AppCompatActivity implements OnMapReadyC
         getJson.setOnClickListener(v -> {
             Log.e(TAG, "GET JSON BUTTON CLICKED");
             startAPICall();
+
             // Add a marker where the ISS is.
             // and move the map's camera to the same location.
             LatLng location = new LatLng(coordinates[0], coordinates[1]);
-            googleMap.addMarker(new MarkerOptions().position(location)
-                    .title("Current Location of the ISS"));
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(location);
+            markerOptions.title("Current Location of the ISS");
+            markerOptions.snippet("Latitude: " + coordinates[0].toString() + '\n'
+                    + "Longitude: " + coordinates[1].toString());
+            googleMap.addMarker(markerOptions);
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         });
 
