@@ -18,7 +18,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -139,8 +138,8 @@ public final class MainActivity extends AppCompatActivity implements OnMapReadyC
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(location);
             markerOptions.title("Current Location of the ISS");
-            markerOptions.snippet("Latitude: " + coordinates[0].toString() + '\n'
-                    + "Longitude: " + coordinates[1].toString());
+            //markerOptions.snippet("Latitude: " + coordinates[0].toString() + '\n'
+                   // + "Longitude: " + coordinates[1].toString());
             googleMap.addMarker(markerOptions);
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         });
