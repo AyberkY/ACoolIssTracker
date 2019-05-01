@@ -18,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -35,7 +36,7 @@ public final class MainActivity extends AppCompatActivity implements OnMapReadyC
     private static RequestQueue requestQueue;
 
     /** Current location of the International Space Station! */
-    private Double[] coordinates = new Double[]{38.427452, 27.139481};
+    private Double[] coordinates = new Double[]{0.0, 0.0};
 
     /**
      * Run when this activity comes to the foreground.
@@ -129,11 +130,12 @@ public final class MainActivity extends AppCompatActivity implements OnMapReadyC
         getJson.setOnClickListener(v -> {
             Log.e(TAG, "GET JSON BUTTON CLICKED");
             startAPICall();
-            // Add a marker where the ISS is.
+            // Add a marker where the iss is.
             // and move the map's camera to the same location.
             LatLng location = new LatLng(coordinates[0], coordinates[1]);
             googleMap.addMarker(new MarkerOptions().position(location)
-                    .title("Current Location of the ISS"));
+                    .title("Current Location of the iss").icon(BitmapDescriptorFactory.
+                            fromResource(R.drawable.http___pluspng)));
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         });
 
